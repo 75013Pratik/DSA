@@ -1,0 +1,155 @@
+import java.util.Scanner;
+class Stack
+{
+	int stack[],tos,maxsize;
+	
+	void createstack(int size)
+	{
+		stack=new int[size];
+		tos = -1;
+		maxsize = size;
+	}
+	
+	void push(int num)
+	{
+		tos=tos+1;
+		stack[tos]=num;
+	}
+
+	int pop()
+	{
+		int temp = stack[tos];
+		tos = tos-1;
+		return temp;
+	}
+
+	int peek()
+	{
+		return stack[tos];
+	}
+
+	boolean is_full()
+	{
+		if(tos==maxsize-1)
+			return true;
+		else
+			return false;
+	}
+
+	boolean is_empty()
+	{
+		if(tos==-1)
+			return true;
+		else 
+			return false;
+	}
+
+	void printstack()
+	{
+		for(int i=0; i<=tos;i++)
+			System.out.print(stack[i]+" ");
+	}
+}
+
+class Queue
+{
+	Stack stack,tempstack;
+	int maxsize;
+
+	void createqueue(int size)
+	{
+		stack = new Stack();
+		tempstack = new Stack();
+		stack.createstack(size);
+		tempstack.createstack(size);
+	}
+
+	void enqueue(int num)
+	{
+		stack.push(num);
+	}
+
+	int dequeue()
+	{
+		while(!stack.is_empty())
+		{
+			tempstack.push(stack.pop());
+		}
+		int delnum = tempstack.pop();	
+		while(!tempstack.is_empty())
+			stack.push(tempstack.pop());
+		return delnum;
+	}
+	
+	boolean is_full()
+	{
+		if(stack.is_full())
+			return true;
+		else 
+			return false;
+	}
+		
+	boolean is_empty()
+	{
+		if(stack.is_empty())
+			return true;
+		else
+			return false;
+	}
+	
+	void printqueue()
+	{
+		stack.printstack();
+	}
+}
+public class QueueofStackDemo
+{
+	public static void main(String args[])
+	{
+		System.out.println("Enter the Size of Queue");
+		Scanner sc = new Scanner(System.in);
+		Queue queue = new Queue();
+		queue.createqueue(sc.nextInt());
+		int ch;
+		do
+		{
+			System.out.println("\nEnter the choice :\n0.Exit\n1.Enqueue\n2.Dequeue\n3.PrintQueue");
+			ch = sc.nextInt();
+			switch(ch)
+			{	
+				case 0:
+					System.out.println("Thank You For Joining us");
+					break;
+				case 1:
+					if(!queue.is_full())
+					{
+						System.out.println("Enter the Number to be Enqueue : ");
+						int no = sc.nextInt();
+						queue.enqueue(no);
+						System.out.println("Number Added Successfully : "+no);
+					}
+					else
+					{
+						System.out.println("Queue Overflow");
+					}
+					break;
+				case 2:
+					if(!queue.is_empty())
+					{
+						System.out.println(queue.dequeue());
+					}
+					else
+						System.out.println("Queue Underflow");
+					break;
+				case 3:
+					if(!queue.is_empty())
+					{
+						queue.printqueue();
+					}
+					else
+						System.out.println("Queue Underflow");
+					break;
+			}
+		}while(ch!=0);
+	}
+}
